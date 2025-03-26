@@ -1,0 +1,58 @@
+.keypad {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.keypad-row {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.keypad button {
+  flex: 1;
+  padding: 15px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.keypad button:hover {
+  background-color: #e0e0e0;
+}
+
+.keypad button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for operator buttons */
+.keypad button:nth-child(4),
+.keypad button:nth-child(5) {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+/* Style for equals button */
+.keypad button:last-child {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Style for memory buttons */
+.keypad-row:first-child button {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+/* Style for scientific function buttons */
+.keypad-row:nth-child(2) button,
+.keypad-row:nth-child(3) button {
+  background-color: #f8f9fa;
+  color: #28a745;
+} 
