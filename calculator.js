@@ -488,7 +488,10 @@ class Calculator {
     }
 }
 
+
 // Initialize the calculator when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     new Calculator();
 }); 
+
+
