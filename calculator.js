@@ -10,6 +10,8 @@ class Calculator {
         this.operationHistory = [];
         this.lastAnswer = 0;
         this.parenthesesCount = 0;
+        this.cursorPosition = 0;
+        this.calculationHistory = [];
         
         this.setupEventListeners();
         this.updateModeButtons();
@@ -109,10 +111,27 @@ class Calculator {
     handleNumber(number) {
         if (this.currentValue === '0') {
             this.currentValue = number;
-            this.updateFormula(number);
+            this.cursorPosition = 1;
+            this.formula.textContent = this.currentValue;
         } else {
-            this.currentValue += number;
-            this.updateFormula(number);
+            // Check if we need to add multiplication
+            const beforeCursor = this.currentValue.slice(0, this.cursorPosition);
+            const lastChar = beforeCursor[beforeCursor.length - 1];
+            
+            // If the last character is a closing parenthesis, add multiplication
+            if (lastChar === ')') {
+                this.currentValue = this.currentValue.slice(0, this.cursorPosition) + 
+                                  '×' + number + 
+                                  this.currentValue.slice(this.cursorPosition);
+                this.cursorPosition += 2; // Move cursor after the number
+            } else {
+                // Insert number at cursor position
+                this.currentValue = this.currentValue.slice(0, this.cursorPosition) + 
+                                  number + 
+                                  this.currentValue.slice(this.cursorPosition);
+                this.cursorPosition++;
+            }
+            this.formula.textContent = this.currentValue;
         }
         this.updateDisplay();
     }
@@ -125,7 +144,7 @@ class Calculator {
             if (['+', '-', '×', '÷', '%'].includes(lastOperation)) {
                 this.operationHistory.push(value);
             } else {
-                this.operationHistory[this.operationHistory.length - 1] += value;
+                this.operationHistory[this.operationHistory.length - 1] = value;
             }
         }
         this.formula.textContent = this.operationHistory.join(' ');
@@ -175,6 +194,12 @@ class Calculator {
             case 'deg':
                 this.setDegMode();
                 break;
+            case 'history':
+                this.toggleHistory();
+                break;
+            case 'clear-history':
+                this.clearHistory();
+                break;
             default:
                 if (['+', '-', '×', '÷', '%'].includes(action)) {
                     this.handleOperator(action);
@@ -187,16 +212,43 @@ class Calculator {
     handleParenthesis(paren) {
         if (paren === '(') {
             this.parenthesesCount++;
-            this.operationHistory.push('(');
+            // If current value is '0', replace it with the opening parenthesis
+            if (this.currentValue === '0') {
+                this.currentValue = '(';
+                this.cursorPosition = 1;
+            } else {
+                // Check if we need to add multiplication
+                const beforeCursor = this.currentValue.slice(0, this.cursorPosition);
+                const lastChar = beforeCursor[beforeCursor.length - 1];
+                
+                // If the last character is a number or closing parenthesis, add multiplication
+                if (lastChar && !['+', '-', '×', '÷', '%', '('].includes(lastChar)) {
+                    this.currentValue = this.currentValue.slice(0, this.cursorPosition) + 
+                                      '×(' + 
+                                      this.currentValue.slice(this.cursorPosition);
+                    this.cursorPosition += 2; // Move cursor after the opening parenthesis
+                } else {
+                    // Insert opening parenthesis at cursor position
+                    this.currentValue = this.currentValue.slice(0, this.cursorPosition) + 
+                                      '(' + 
+                                      this.currentValue.slice(this.cursorPosition);
+                    this.cursorPosition++;
+                }
+            }
         } else if (paren === ')') {
             if (this.parenthesesCount > 0) {
                 this.parenthesesCount--;
-                this.operationHistory.push(')');
+                // Insert closing parenthesis at cursor position
+                this.currentValue = this.currentValue.slice(0, this.cursorPosition) + 
+                                  ')' + 
+                                  this.currentValue.slice(this.cursorPosition);
+                this.cursorPosition++;
             } else {
                 return; // Don't add closing parenthesis if there's no matching opening
             }
         }
-        this.formula.textContent = this.operationHistory.join(' ');
+        this.formula.textContent = this.currentValue;
+        this.updateDisplay();
     }
 
     handleScientific(operation) {
@@ -274,8 +326,8 @@ class Calculator {
 
             if (result !== undefined) {
                 this.currentValue = result.toString();
-                this.operationHistory = [`${operationSymbol}(${current})`, '=', result.toString()];
-                this.formula.textContent = this.operationHistory.join(' ');
+                this.cursorPosition = this.currentValue.length;
+                this.formula.textContent = `${operationSymbol}(${current}) = ${result}`;
                 this.lastAnswer = result;
                 this.updateDisplay();
             }
@@ -285,59 +337,141 @@ class Calculator {
     }
 
     handleOperator(operator) {
-        this.lastNumber = parseFloat(this.currentValue);
+        // If there's no last operation, store the current value
+        if (!this.lastOperation) {
+            this.lastNumber = parseFloat(this.currentValue);
+        }
+        
+        // Store the current operation
         this.lastOperation = operator;
-        this.currentValue = '0';
-        this.operationHistory.push(operator);
-        this.formula.textContent = this.operationHistory.join(' ');
+        
+        // Insert operator at cursor position
+        this.currentValue = this.currentValue.slice(0, this.cursorPosition) + 
+                          operator + 
+                          this.currentValue.slice(this.cursorPosition);
+        
+        // Move cursor after the operator
+        this.cursorPosition++;
+        
+        // Update the formula display
+        this.formula.textContent = this.currentValue;
         this.updateDisplay();
     }
 
     calculate() {
-        if (this.lastOperation && this.lastNumber !== null) {
-            const current = parseFloat(this.currentValue);
-            let result;
+        let result;
 
-            try {
-                if (this.parenthesesCount > 0) {
-                    this.handleError(new Error('Unclosed parentheses'));
-                    return;
-                }
-
-                switch (this.lastOperation) {
-                    case '+':
-                        result = this.add(this.lastNumber, current);
-                        break;
-                    case '-':
-                        result = this.subtract(this.lastNumber, current);
-                        break;
-                    case '×':
-                        result = this.multiply(this.lastNumber, current);
-                        break;
-                    case '÷':
-                        result = this.divide(this.lastNumber, current);
-                        break;
-                    case '%':
-                        result = this.mod(this.lastNumber, current);
-                        break;
-                }
-
-                this.currentValue = result.toString();
-                this.operationHistory.push('=');
-                this.operationHistory.push(result.toString());
-                this.formula.textContent = this.operationHistory.join(' ');
-                this.lastAnswer = result;
-                this.lastOperation = null;
-                this.lastNumber = null;
-                this.updateDisplay();
-            } catch (error) {
-                this.handleError(error);
+        try {
+            if (this.parenthesesCount > 0) {
+                this.handleError(new Error('Unclosed parentheses'));
+                return;
             }
+
+            // Evaluate the expression
+            try {
+                // Replace calculator symbols with JavaScript operators
+                const expression = this.currentValue
+                    .replace(/×/g, '*')
+                    .replace(/÷/g, '/')
+                    .replace(/%/g, '%');
+                
+                // Evaluate the expression including parentheses
+                result = eval(expression);
+                
+                // Check if result is valid
+                if (isNaN(result) || !isFinite(result)) {
+                    throw new Error('Invalid calculation');
+                }
+            } catch (e) {
+                throw new Error('Invalid expression');
+            }
+
+            // Add to calculation history
+            this.addToHistory(this.currentValue, result);
+
+            // Update the formula to show the complete calculation
+            this.formula.textContent = `${this.currentValue} = ${result}`;
+            
+            // Update the current value and cursor
+            this.currentValue = result.toString();
+            this.cursorPosition = this.currentValue.length;
+            
+            // Store the result as last answer
+            this.lastAnswer = result;
+            
+            // Reset operation state
+            this.lastOperation = null;
+            this.lastNumber = null;
+            
+            this.updateDisplay();
+        } catch (error) {
+            this.handleError(error);
         }
+    }
+
+    addToHistory(formula, result) {
+        this.calculationHistory.unshift({
+            formula: formula,
+            result: result,
+            timestamp: new Date()
+        });
+        this.updateHistoryDisplay();
+    }
+
+    updateHistoryDisplay() {
+        const historyList = document.querySelector('.history-list');
+        const keypad = document.querySelector('.keypad');
+        historyList.innerHTML = '';
+        
+        this.calculationHistory.forEach(item => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            
+            historyItem.innerHTML = `
+                <div class="history-formula">${item.formula}</div>
+                <div class="history-result">${item.result}</div>
+            `;
+            
+            historyItem.addEventListener('click', () => {
+                this.currentValue = item.result.toString();
+                this.cursorPosition = this.currentValue.length;
+                this.formula.textContent = item.formula;
+                this.updateDisplay();
+                this.toggleHistory();
+            });
+            historyList.appendChild(historyItem);
+        });
+    }
+
+    toggleHistory() {
+        const historyView = document.querySelector('.history-view');
+        const keypad = document.querySelector('.keypad');
+        const display = document.querySelector('.display-container');
+        const historyBtn = document.querySelector('.history-btn');
+        
+        if (historyView.classList.contains('show')) {
+            // Hide history view
+            historyView.classList.remove('show');
+            keypad.classList.remove('hidden');
+            display.style.display = 'block';
+            historyBtn.textContent = 'History';
+        } else {
+            // Show history view
+            historyView.classList.add('show');
+            keypad.classList.add('hidden');
+            display.style.display = 'none';
+            historyBtn.textContent = 'Return';
+        }
+    }
+
+    clearHistory() {
+        this.calculationHistory = [];
+        this.updateHistoryDisplay();
     }
 
     handleError(error) {
         this.currentValue = 'Error';
+        this.cursorPosition = 0;
         this.operationHistory = ['Error'];
         this.formula.textContent = 'Error';
         this.updateDisplay();
@@ -345,65 +479,80 @@ class Calculator {
     }
 
     clear() {
-        this.currentValue = '0';
-        this.operationHistory = [];
-        this.formula.textContent = '';
-        this.lastOperation = null;
-        this.lastNumber = null;
-        this.parenthesesCount = 0;
+        if (this.currentValue.length > 1 && this.cursorPosition > 0) {
+            // Remove character before cursor position
+            this.currentValue = this.currentValue.slice(0, this.cursorPosition - 1) + 
+                              this.currentValue.slice(this.cursorPosition);
+            // Move cursor back one position
+            this.cursorPosition--;
+            this.formula.textContent = this.currentValue;
+        } else if (this.currentValue.length === 1) {
+            // If only one character remains, reset to '0'
+            this.currentValue = '0';
+            this.cursorPosition = 0;
+            this.formula.textContent = '';
+        }
         this.updateDisplay();
     }
 
     allClear() {
-        this.clear();
+        this.currentValue = '0';
+        this.cursorPosition = 0;
+        this.formula.textContent = '';
+        this.lastOperation = null;
+        this.lastNumber = null;
+        this.parenthesesCount = 0;
         this.memory = 0;
+        this.updateDisplay();
     }
 
     memoryClear() {
         this.memory = 0;
-        this.operationHistory = ['MC'];
         this.formula.textContent = 'MC';
     }
 
     memoryRecall() {
         this.currentValue = this.memory.toString();
-        this.operationHistory = [`MR = ${this.memory}`];
         this.formula.textContent = `MR = ${this.memory}`;
         this.updateDisplay();
     }
 
     memoryAdd() {
         this.memory = this.add(this.memory, parseFloat(this.currentValue));
-        this.operationHistory = [`M+ ${this.currentValue}`];
         this.formula.textContent = `M+ ${this.currentValue}`;
     }
 
     memorySubtract() {
         this.memory = this.subtract(this.memory, parseFloat(this.currentValue));
-        this.operationHistory = [`M- ${this.currentValue}`];
         this.formula.textContent = `M- ${this.currentValue}`;
     }
 
     useLastAnswer() {
         this.currentValue = this.lastAnswer.toString();
-        this.operationHistory = [`Ans = ${this.lastAnswer}`];
         this.formula.textContent = `Ans = ${this.lastAnswer}`;
         this.updateDisplay();
     }
 
     moveCursorLeft() {
-        if (this.currentValue.length > 1) {
-            this.currentValue = this.currentValue.slice(0, -1);
+        if (this.cursorPosition > 0) {
+            this.cursorPosition--;
             this.updateDisplay();
         }
     }
 
     moveCursorRight() {
-        // Implement cursor movement if needed
+        if (this.cursorPosition < this.currentValue.length) {
+            this.cursorPosition++;
+            this.updateDisplay();
+        }
     }
 
     updateDisplay() {
-        this.display.textContent = this.currentValue;
+        // Add cursor indicator
+        const displayValue = this.currentValue;
+        const beforeCursor = displayValue.slice(0, this.cursorPosition);
+        const afterCursor = displayValue.slice(this.cursorPosition);
+        this.display.textContent = beforeCursor + '|' + afterCursor;
     }
 
     setRadMode() {
