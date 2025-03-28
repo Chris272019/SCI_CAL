@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Keypad from './keypad';
 import './Calculator.css';
 
+
+
 const Calculator = () => {
   const [display, setDisplay] = useState('0');
   const [formula, setFormula] = useState('');

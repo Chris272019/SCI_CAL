@@ -1,5 +1,6 @@
 import React from 'react';
-import './Keypad.css';
+import './Calculator.css';
+import { FaHistory, FaTrash, FaTimes } from "react-icons/fa";
 
 const Keypad = ({
   onNumber,
@@ -33,21 +34,52 @@ const Keypad = ({
         </div>
       </div>
       <div className="button-container">
-        <button className="history-btn" onClick={onHistory}>{historyButtonText}</button>
-        <button className="clear-history" onClick={onClearHistory}>Clear History</button>
-      </div>
-      <div className={`history-view ${showHistory ? 'show' : ''}`}>
-        <div className="history-header">
-          <h3>Calculation History</h3>
+  {/* Show/Hide History Button */}
+  <button className="history-btn" onClick={onHistory}>
+    {showHistory ? (
+      <>
+        <span className="icon-right">
+          <FaTimes/>
+        </span>
+      </>
+    ) : (
+      <>
+        
+        <span className="icon-right">
+          <FaHistory/>
+        </span>
+      </>
+    )}
+  </button>
+</div>
+
+{/* History Sidebar */}
+<div className={`history-sidebar ${showHistory ? "show" : ""}`}>
+  <div className="history-header">
+    <h3>Calculation History</h3>
+    <button className="close-history" onClick={onHistory}>
+      <FaTimes />
+     
+    </button>
+  </div>
+
+  {/* History List */}
+  <div className="history-list">
+    {history.length > 0 ? (
+      history.map((item, index) => (
+        <div key={index} className="history-item">
+          <div className="history-formula">{item}</div>
+          <button className="clear-history" onClick={onClearHistory}>
+      <FaTrash className="icon-right" />
+      </button>
         </div>
-        <div className="history-list">
-          {history.map((item, index) => (
-            <div key={index} className="history-item">
-              <div className="history-formula">{item}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      ))
+    ) : (
+      <div className="empty-history">No history available</div>
+    )}
+  </div>
+</div>
+
       <div className={`keypad ${showHistory ? 'hidden' : ''}`}>
         <div className="keypad-row">
           <button className="function" onClick={() => onFunction('x2')}>x²</button>
