@@ -9,61 +9,113 @@ const Keypad = ({
   onMemory,
   onScientific,
   isRadMode,
-  onToggleMode
+  onToggleMode,
+  onHistory,
+  onClearHistory,
+  onFunction,
+  onAllClear,
+  onAns,
+  onDirection,
+  onParenthesis,
+  onPercentage,
+  formula,
+  display,
+  showHistory,
+  history,
+  historyButtonText
 }) => {
   return (
-    <div className="keypad">
-      <div className="keypad-row">
-        <button onClick={() => onMemory('MC')}>MC</button>
-        <button onClick={() => onMemory('MR')}>MR</button>
-        <button onClick={() => onMemory('M+')}>M+</button>
-        <button onClick={() => onMemory('M-')}>M-</button>
-        <button onClick={onClear}>C</button>
+    <div className="calculator">
+      <div className="display-container">
+        <div className="display">
+          <div className="formula">{formula}</div>
+          <div className="result">{display}</div>
+        </div>
       </div>
-
-      <div className="keypad-row">
-        <button onClick={() => onScientific('sin')}>sin</button>
-        <button onClick={() => onScientific('cos')}>cos</button>
-        <button onClick={() => onScientific('tan')}>tan</button>
-        <button onClick={() => onScientific('log')}>log</button>
-        <button onClick={() => onScientific('ln')}>ln</button>
+      <div className="button-container">
+        <button className="history-btn" onClick={onHistory}>{historyButtonText}</button>
+        <button className="clear-history" onClick={onClearHistory}>Clear History</button>
       </div>
-
-      <div className="keypad-row">
-        <button onClick={() => onScientific('sqrt')}>√</button>
-        <button onClick={() => onScientific('square')}>x²</button>
-        <button onClick={() => onScientific('cube')}>x³</button>
-        <button onClick={() => onScientific('factorial')}>n!</button>
-        <button onClick={() => onOperator('÷')}>÷</button>
+      <div className={`history-view ${showHistory ? 'show' : ''}`}>
+        <div className="history-header">
+          <h3>Calculation History</h3>
+        </div>
+        <div className="history-list">
+          {history.map((item, index) => (
+            <div key={index} className="history-item">
+              <div className="history-formula">{item}</div>
+            </div>
+          ))}
+        </div>
       </div>
-
-      <div className="keypad-row">
-        <button onClick={() => onNumber('7')}>7</button>
-        <button onClick={() => onNumber('8')}>8</button>
-        <button onClick={() => onNumber('9')}>9</button>
-        <button onClick={() => onOperator('×')}>×</button>
-        <button onClick={() => onOperator('%')}>%</button>
-      </div>
-
-      <div className="keypad-row">
-        <button onClick={() => onNumber('4')}>4</button>
-        <button onClick={() => onNumber('5')}>5</button>
-        <button onClick={() => onNumber('6')}>6</button>
-        <button onClick={() => onOperator('-')}>-</button>
-        <button onClick={onToggleMode}>{isRadMode ? 'DEG' : 'RAD'}</button>
-      </div>
-
-      <div className="keypad-row">
-        <button onClick={() => onNumber('1')}>1</button>
-        <button onClick={() => onNumber('2')}>2</button>
-        <button onClick={() => onNumber('3')}>3</button>
-        <button onClick={() => onOperator('+')}>+</button>
-        <button onClick={onEqual}>=</button>
-      </div>
-
-      <div className="keypad-row">
-        <button onClick={() => onNumber('0')}>0</button>
-        <button onClick={() => onNumber('.')}>.</button>
+      <div className={`keypad ${showHistory ? 'hidden' : ''}`}>
+        <div className="keypad-row">
+          <button className="function" onClick={() => onFunction('x2')}>x²</button>
+          <button className="function" onClick={() => onFunction('x3')}>x³</button>
+          <button className="function" onClick={() => onFunction('x-1')}>x⁻¹</button>
+          <button className="function" onClick={() => onFunction('sqrt')}>√</button>
+          <button className="function" onClick={() => onFunction('cube-root')}>∛</button>
+        </div>
+        <div className="keypad-row">
+          <button className="function" onClick={() => onFunction('eng')}>ENG</button>
+          <button className="function" onClick={() => onFunction('log')}>log</button>
+          <button className="function" onClick={() => onFunction('ln')}>ln</button>
+          <button className="function" onClick={() => onFunction('10x')}>10ˣ</button>
+          <button className="function" onClick={() => onFunction('ex')}>eˣ</button>
+        </div>
+        <div className="keypad-row">
+          <button className="function" onClick={() => onFunction('sin')}>sin</button>
+          <button className="function" onClick={() => onFunction('cos')}>cos</button>
+          <button className="function" onClick={() => onFunction('tan')}>tan</button>
+          <button className="function" onClick={() => onFunction('pi')}>π</button>
+          <button className="function" onClick={() => onFunction('e')}>e</button>
+        </div>
+        <div className="keypad-row">
+          <button className="function" onClick={() => onFunction('factorial')}>x!</button>
+          <button className="function" onClick={() => onFunction('abs')}>|x|</button>
+          <button className="function" onClick={() => onFunction('eng')}>ENG</button>
+        </div>
+        <div className="keypad-row">
+          <button className="number" onClick={() => onNumber('7')}>7</button>
+          <button className="number" onClick={() => onNumber('8')}>8</button>
+          <button className="number" onClick={() => onNumber('9')}>9</button>
+          <button className="operator" onClick={() => onOperator('÷')}>÷</button>
+          <button className="memory" onClick={() => onMemory('mc')}>MC</button>
+        </div>
+        <div className="keypad-row">
+          <button className="number" onClick={() => onNumber('4')}>4</button>
+          <button className="number" onClick={() => onNumber('5')}>5</button>
+          <button className="number" onClick={() => onNumber('6')}>6</button>
+          <button className="operator" onClick={() => onOperator('×')}>×</button>
+          <button className="memory" onClick={() => onMemory('mr')}>MR</button>
+        </div>
+        <div className="keypad-row">
+          <button className="number" onClick={() => onNumber('1')}>1</button>
+          <button className="number" onClick={() => onNumber('2')}>2</button>
+          <button className="number" onClick={() => onNumber('3')}>3</button>
+          <button className="operator" onClick={() => onOperator('-')}>-</button>
+          <button className="memory" onClick={() => onMemory('m+')}>M+</button>
+        </div>
+        <div className="keypad-row">
+          <button className="number" onClick={() => onNumber('0')}>0</button>
+          <button className="number" onClick={() => onNumber('.')}>.</button>
+          <button className="operator" onClick={onEqual}>=</button>
+          <button className="operator" onClick={() => onOperator('+')}>+</button>
+          <button className="memory" onClick={() => onMemory('m-')}>M-</button>
+        </div>
+        <div className="keypad-row">
+          <button className="function" onClick={() => onDirection('left')}>←</button>
+          <button className="function" onClick={() => onDirection('right')}>→</button>
+          <button className="function" onClick={onClear}>C</button>
+          <button className="function" onClick={onAllClear}>AC</button>
+          <button className="function" onClick={onAns}>Ans</button>
+        </div>
+        <div className="keypad-row">
+          <button className="function" onClick={() => onParenthesis('(')}>(</button>
+          <button className="function" onClick={() => onParenthesis(')')}>)</button>
+          <button className="function" onClick={() => onPercentage('%')}>%</button>
+          <button className="function" onClick={onToggleMode}>{isRadMode ? 'DEG' : 'RAD'}</button>
+        </div>
       </div>
     </div>
   );
