@@ -19,11 +19,14 @@ const Keypad = ({
   onDirection,
   onParenthesis,
   onPercentage,
+  onNegative,
   formula,
   display,
   showHistory,
   history,
-  historyButtonText
+  historyButtonText,
+  isInverseMode,
+  onToggleInverse
 }) => {
   return (
     <div className="calculator">
@@ -34,52 +37,44 @@ const Keypad = ({
         </div>
       </div>
       <div className="button-container">
-  {/* Show/Hide History Button */}
-  <button className="history-btn" onClick={onHistory}>
-    {showHistory ? (
-      <>
-        <span className="icon-right">
-          <FaTimes/>
-        </span>
-      </>
-    ) : (
-      <>
-        
-        <span className="icon-right">
-          <FaHistory/>
-        </span>
-      </>
-    )}
-  </button>
-</div>
-
-{/* History Sidebar */}
-<div className={`history-sidebar ${showHistory ? "show" : ""}`}>
-  <div className="history-header">
-    <h3>Calculation History</h3>
-    <button className="close-history" onClick={onHistory}>
-      <FaTimes />
-     
-    </button>
-  </div>
-
-  {/* History List */}
-  <div className="history-list">
-    {history.length > 0 ? (
-      history.map((item, index) => (
-        <div key={index} className="history-item">
-          <div className="history-formula">{item}</div>
-          <button className="clear-history" onClick={onClearHistory}>
-      <FaTrash className="icon-right" />
-      </button>
+        <button className="history-btn" onClick={onHistory}>
+          {showHistory ? (
+            <>
+              <span className="icon-right">
+                <FaTimes/>
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="icon-right">
+                <FaHistory/>
+              </span>
+            </>
+          )}
+        </button>
+      </div>
+      <div className={`history-sidebar ${showHistory ? "show" : ""}`}>
+        <div className="history-header">
+          <h3>Calculation History</h3>
+          <button className="close-history" onClick={onHistory}>
+            <FaTimes />
+          </button>
         </div>
-      ))
-    ) : (
-      <div className="empty-history">No history available</div>
-    )}
-  </div>
-</div>
-
+        <div className="history-list">
+          {history.length > 0 ? (
+            history.map((item, index) => (
+              <div key={index} className="history-item">
+                <div className="history-formula">{item}</div>
+                <button className="clear-history" onClick={onClearHistory}>
+                  <FaTrash className="icon-right" />
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="empty-history">No history available</div>
+          )}
+        </div>
+      </div>
       <div className={`keypad ${showHistory ? 'hidden' : ''}`}>
         <div className="keypad-row">
           <button className="function" onClick={() => onFunction('x2')}>x²</button>
@@ -90,22 +85,22 @@ const Keypad = ({
         </div>
         <div className="keypad-row">
           <button className="function" onClick={() => onFunction('eng')}>ENG</button>
-          <button className="function" onClick={() => onFunction('log')}>log</button>
-          <button className="function" onClick={() => onFunction('ln')}>ln</button>
+          <button className="function" onClick={() => onFunction('log')}>{isInverseMode ? '10ˣ' : 'log'}</button>
+          <button className="function" onClick={() => onFunction('ln')}>{isInverseMode ? 'eˣ' : 'ln'}</button>
           <button className="function" onClick={() => onFunction('10x')}>10ˣ</button>
           <button className="function" onClick={() => onFunction('ex')}>eˣ</button>
         </div>
         <div className="keypad-row">
-          <button className="function" onClick={() => onFunction('sin')}>sin</button>
-          <button className="function" onClick={() => onFunction('cos')}>cos</button>
-          <button className="function" onClick={() => onFunction('tan')}>tan</button>
+          <button className="function" onClick={() => onFunction('sin')}>{isInverseMode ? 'sin⁻¹' : 'sin'}</button>
+          <button className="function" onClick={() => onFunction('cos')}>{isInverseMode ? 'cos⁻¹' : 'cos'}</button>
+          <button className="function" onClick={() => onFunction('tan')}>{isInverseMode ? 'tan⁻¹' : 'tan'}</button>
           <button className="function" onClick={() => onFunction('pi')}>π</button>
           <button className="function" onClick={() => onFunction('e')}>e</button>
         </div>
         <div className="keypad-row">
           <button className="function" onClick={() => onFunction('factorial')}>x!</button>
           <button className="function" onClick={() => onFunction('abs')}>|x|</button>
-          <button className="function" onClick={() => onFunction('eng')}>ENG</button>
+          <button className="function" onClick={onToggleInverse}>INV</button>
         </div>
         <div className="keypad-row">
           <button className="number" onClick={() => onNumber('7')}>7</button>
@@ -147,6 +142,9 @@ const Keypad = ({
           <button className="function" onClick={() => onParenthesis(')')}>)</button>
           <button className="function" onClick={() => onPercentage('%')}>%</button>
           <button className="function" onClick={onToggleMode}>{isRadMode ? 'DEG' : 'RAD'}</button>
+        </div>
+        <div className="keypad-row">
+          <button className="function" onClick={onNegative}>±</button>
         </div>
       </div>
     </div>
