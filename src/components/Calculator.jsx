@@ -16,6 +16,7 @@ const Calculator = () => {
   const [lastAnswer, setLastAnswer] = useState(null);
   const [currentOperation, setCurrentOperation] = useState('');
   const [cursorPosition, setCursorPosition] = useState(0);
+  const [isInverseMode, setIsInverseMode] = useState(false);
 
   const handleNumber = (number) => {
     if (display === '0' || lastAnswer !== null) {
@@ -146,16 +147,43 @@ const Calculator = () => {
 
     switch (operation) {
       case 'sin':
-        result = isRadMode ? Math.sin(current) : Math.sin(current * Math.PI / 180);
-        operationSymbol = 'sin';
+        if (isInverseMode) {
+          if (current < -1 || current > 1) {
+            setDisplay('Error|');
+            setFormula('Error: sin⁻¹(x) requires -1 ≤ x ≤ 1');
+            setCursorPosition(5);
+            return;
+          }
+          result = isRadMode ? Math.asin(current) : Math.asin(current) * 180 / Math.PI;
+          operationSymbol = 'sin⁻¹';
+        } else {
+          result = isRadMode ? Math.sin(current) : Math.sin(current * Math.PI / 180);
+          operationSymbol = 'sin';
+        }
         break;
       case 'cos':
-        result = isRadMode ? Math.cos(current) : Math.cos(current * Math.PI / 180);
-        operationSymbol = 'cos';
+        if (isInverseMode) {
+          if (current < -1 || current > 1) {
+            setDisplay('Error|');
+            setFormula('Error: cos⁻¹(x) requires -1 ≤ x ≤ 1');
+            setCursorPosition(5);
+            return;
+          }
+          result = isRadMode ? Math.acos(current) : Math.acos(current) * 180 / Math.PI;
+          operationSymbol = 'cos⁻¹';
+        } else {
+          result = isRadMode ? Math.cos(current) : Math.cos(current * Math.PI / 180);
+          operationSymbol = 'cos';
+        }
         break;
       case 'tan':
-        result = isRadMode ? Math.tan(current) : Math.tan(current * Math.PI / 180);
-        operationSymbol = 'tan';
+        if (isInverseMode) {
+          result = isRadMode ? Math.atan(current) : Math.atan(current) * 180 / Math.PI;
+          operationSymbol = 'tan⁻¹';
+        } else {
+          result = isRadMode ? Math.tan(current) : Math.tan(current * Math.PI / 180);
+          operationSymbol = 'tan';
+        }
         break;
       case 'asin':
         result = isRadMode ? Math.asin(current) : Math.asin(current) * 180 / Math.PI;
@@ -170,12 +198,22 @@ const Calculator = () => {
         operationSymbol = 'atan';
         break;
       case 'log':
-        result = Math.log10(current);
-        operationSymbol = 'log';
+        if (isInverseMode) {
+          result = Math.pow(10, current);
+          operationSymbol = '10ˣ';
+        } else {
+          result = Math.log10(current);
+          operationSymbol = 'log';
+        }
         break;
       case 'ln':
-        result = Math.log(current);
-        operationSymbol = 'ln';
+        if (isInverseMode) {
+          result = Math.exp(current);
+          operationSymbol = 'eˣ';
+        } else {
+          result = Math.log(current);
+          operationSymbol = 'ln';
+        }
         break;
       case 'sqrt':
         result = Math.sqrt(current);
@@ -370,6 +408,8 @@ const Calculator = () => {
       showHistory={showHistory}
       history={history}
       historyButtonText={getHistoryButtonText()}
+      isInverseMode={isInverseMode}
+      onToggleInverse={() => setIsInverseMode(!isInverseMode)}
     />
   );
 };
