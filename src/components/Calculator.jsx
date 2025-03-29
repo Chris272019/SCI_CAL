@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Keypad from './Keypad';
+import Keypad from './keypad';
 import './Calculator.css';
 
 
@@ -92,8 +92,8 @@ const Calculator = () => {
     const displayWithoutCursor = display.replace('|', '');
     const currentValue = displayWithoutCursor === '0' ? '' : displayWithoutCursor;
     
-    if (lastOperation && lastNumber !== null) {
-      // Extract the input number from the formula
+    if (lastOperation && ['sin', 'cos', 'tan', 'log', 'ln'].includes(lastOperation)) {
+      // Handle scientific operations
       let inputNumber;
       if (isInverseMode) {
         // For inverse operations, split by the inverse symbol
@@ -171,18 +171,19 @@ const Calculator = () => {
             operationSymbol = 'ln';
           }
           break;
-        default:
-          // Handle regular arithmetic operations
-          const expression = formula
-            .replace(/×/g, '*')
-            .replace(/÷/g, '/')
-            .replace(/%/g, '%');
-          result = eval(expression);
-          operationSymbol = lastOperation;
       }
 
       // Multiply the result by the multiplier
       result = result * lastNumber;
+      
+      // Round the result to avoid floating-point precision errors
+      if (Math.abs(result) < 1e-10) {
+        result = 0;
+      } else if (Math.abs(result) > 1e10) {
+        result = result.toExponential(6);
+      } else {
+        result = Number(result.toFixed(10));
+      }
       
       const fullOperation = lastNumber !== 1 
         ? `${lastNumber}${operationSymbol}(${inputNumber}) = ${result}`
@@ -196,6 +197,48 @@ const Calculator = () => {
       setLastNumber(null);
       setCurrentOperation('');
       setCursorPosition(result.toString().length);
+    } else {
+      // Handle regular arithmetic operations
+      try {
+        // Replace adjacent parentheses with multiplication
+        let expression = formula
+          .replace(/×/g, '*')
+          .replace(/÷/g, '/')
+          .replace(/%/g, '%')
+          .replace(/\)\(/g, ')*('); // Add multiplication between adjacent parentheses
+        
+        let result = eval(expression);
+        
+        if (isNaN(result) || !isFinite(result)) {
+          setDisplay('Error|');
+          setFormula('Error: Invalid calculation');
+          setCursorPosition(5);
+          return;
+        }
+
+        // Round the result to avoid floating-point precision errors
+        if (Math.abs(result) < 1e-10) {
+          result = 0;
+        } else if (Math.abs(result) > 1e10) {
+          result = result.toExponential(6);
+        } else {
+          result = Number(result.toFixed(10));
+        }
+
+        const fullOperation = `${formula} = ${result}`;
+        setDisplay(result.toString() + '|');
+        setFormula(fullOperation);
+        addToHistory(fullOperation);
+        setLastAnswer(result);
+        setLastOperation(null);
+        setLastNumber(null);
+        setCurrentOperation('');
+        setCursorPosition(result.toString().length);
+      } catch (error) {
+        setDisplay('Error|');
+        setFormula('Error: Invalid expression');
+        setCursorPosition(5);
+      }
     }
   };
 
@@ -339,6 +382,36 @@ const Calculator = () => {
     addToHistory(fullOperation);
   };
 
+  const handleNegative = () => {
+    const displayWithoutCursor = display.replace('|', '');
+    const currentValue = displayWithoutCursor === '0' ? '' : displayWithoutCursor;
+    
+    // If we're in a scientific function, handle the number inside parentheses
+    if (lastOperation && ['sin', 'cos', 'tan', 'log', 'ln'].includes(lastOperation)) {
+      const parts = currentValue.split('(');
+      const numberPart = parts[1].split(')')[0];
+      const newDisplay = parts[0] + '(' + '-' + numberPart + '|' + parts[1].slice(numberPart.length + 1);
+      setDisplay(newDisplay);
+      setFormula(prev => {
+        const formulaParts = prev.split('(');
+        return formulaParts[0] + '(' + '-' + formulaParts[1];
+      });
+      setCursorPosition(parts[0].length + 2); // Move cursor after the negative sign
+    } else {
+      // Find the last number in the current value
+      const lastNumberMatch = currentValue.match(/-?\d+\.?\d*$/);
+      if (lastNumberMatch) {
+        const lastNumber = lastNumberMatch[0];
+        // Always add a negative sign
+        const newValue = currentValue.slice(0, -lastNumber.length) + '-' + lastNumber;
+        const newDisplay = newValue + '|';
+        setDisplay(newDisplay);
+        setFormula(newValue);
+        setCursorPosition(newValue.length);
+      }
+    }
+  };
+
   return (
     <Keypad
       onNumber={handleNumber}
@@ -357,6 +430,7 @@ const Calculator = () => {
       onDirection={handleDirection}
       onParenthesis={handleParenthesis}
       onPercentage={handlePercentage}
+      onNegative={handleNegative}
       formula={formula}
       display={display}
       showHistory={showHistory}

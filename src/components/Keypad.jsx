@@ -19,6 +19,7 @@ const Keypad = ({
   onDirection,
   onParenthesis,
   onPercentage,
+  onNegative,
   formula,
   display,
   showHistory,
@@ -141,6 +142,9 @@ const Keypad = ({
           <button className="function" onClick={() => onParenthesis(')')}>)</button>
           <button className="function" onClick={() => onPercentage('%')}>%</button>
           <button className="function" onClick={onToggleMode}>{isRadMode ? 'DEG' : 'RAD'}</button>
+        </div>
+        <div className="keypad-row">
+          <button className="function" onClick={onNegative}>±</button>
         </div>
       </div>
     </div>
