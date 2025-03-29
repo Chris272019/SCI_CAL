@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Keypad from './keypad';
+import Keypad from './Keypad';
 import './Calculator.css';
 
 
