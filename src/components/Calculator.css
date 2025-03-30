@@ -381,10 +381,10 @@ button:active {
     width: 95%;
     height: 80vh; /* Force full height */
     padding: 5px;
-    margin: 0;
+    margin-top: 10px;
     gap: 5px;
     box-sizing: border-box; /* Ensure padding is included in dimensions */
-    overflow-y: auto; /* Prevent overflow */
+    overflow-y: hidden; /* Prevent overflow */
   }
 
   .keypad {
