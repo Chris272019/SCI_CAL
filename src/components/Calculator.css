@@ -15,7 +15,7 @@ body {
   box-shadow: 0 0 10px #C8E6C9;
   padding: 10px;
   width: 50vw; /* Set width to half of the screen */
-  height: auto; /* Dynamically adjust height based on content */
+ /* height: auto; /* Dynamically adjust height based on content */
   min-height: 90vh; /* Maintain minimum height */
   display: flex;
   flex-direction: column;
@@ -381,7 +381,7 @@ button:active {
     width: 95%;
     height: 80vh; /* Force full height */
     padding: 5px;
-    margin-top: 10px;
+    margin-top: 30px;
     gap: 5px;
     box-sizing: border-box; /* Ensure padding is included in dimensions */
     overflow-y: hidden; /* Prevent overflow */
