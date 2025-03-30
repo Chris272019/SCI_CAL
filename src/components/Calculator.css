@@ -6,6 +6,7 @@ body {
   min-height: 100vh;
   font-family: 'Courier New', Courier, monospace;
   overflow-y: hidden; 
+  background-color: #5F8B4C;
 }
 
 /* Calculator container */
@@ -378,7 +379,7 @@ button:active {
 @media (max-width: 480px) {
   .calculator {
     width: 95%;
-    height: 100vh; /* Force full height */
+    height: 80vh; /* Force full height */
     padding: 5px;
     margin: 0;
     gap: 5px;
@@ -389,6 +390,7 @@ button:active {
   .keypad {
     width: 100%;
     padding: 5px;
+    margin-top: 20px;
     flex-grow: 1; /* Fill available space */
   }
 
