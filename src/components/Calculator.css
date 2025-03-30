@@ -4,7 +4,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   overflow-y: hidden; 
   background-color: #5F8B4C;
 }
@@ -336,6 +336,12 @@ button:active {
 /*--------------------------------------------------------------*/
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
+  body {
+    overflow-y: hidden; /* Prevent vertical scrolling */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ensure full height */
+  }
   .calculator {
     width: 90%;
     height: 95vh;
@@ -415,6 +421,7 @@ button:active {
   }
 
   .button-container {
+    margin-top: 10px;
     margin-bottom: 5px;
     padding: 0;
   }
