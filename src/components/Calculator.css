@@ -12,7 +12,7 @@ body {
 .calculator {
   background-color: #D5F5E3;
   box-shadow: 0 0 10px #C8E6C9;
-  padding: 20px;
+  padding: 10px;
   width: 40vw; /* Set width to half of the screen */
   height: 90vh; /* Keep height relative to screen */
   display: flex;
@@ -164,7 +164,7 @@ button:active {
   justify-content: flex-end; /* Push button to the right */
   align-items: center;
   width: 100%;
-  margin-bottom: 5px; /* Add space between button and keypad */
+  
 }
 
 /* History button styles */
@@ -404,6 +404,6 @@ button:active {
   }
 
   .history-sidebar {
-    width: 100%;
+    width: 90%;
   }
 }
