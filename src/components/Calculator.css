@@ -12,7 +12,7 @@ body {
 .calculator {
   background-color: #D5F5E3;
   box-shadow: 0 0 10px #C8E6C9;
-  padding: 10px;
+  padding: 5px 5px 5px 5px;
   width: 40vw; /* Set width to half of the screen */
   height: 90vh; /* Keep height relative to screen */
   display: flex;
@@ -334,7 +334,7 @@ button:active {
   .calculator {
     width: 90%;
     height: 95vh;
-    padding: 15px;
+    padding: 5px;
   }
 
   .keypad {
@@ -373,7 +373,7 @@ button:active {
   .calculator {
     width: 95%;
     height: 100vh;
-    padding: 10px;
+    padding: 5px;
   }
 
   .keypad {
