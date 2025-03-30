@@ -17,7 +17,7 @@ body {
   height: 90vh; /* Keep height relative to screen */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   border-radius: 10px;
   margin-top: 25px;
 }
@@ -368,12 +368,12 @@ button:active {
     width: 60%;
   }
 }
-
 @media (max-width: 480px) {
   .calculator {
     width: 95%;
     height: 100vh;
     padding: 5px;
+    margin: 0; /* Make sure there's no margin */
   }
 
   .keypad {
@@ -385,6 +385,16 @@ button:active {
     padding: 8px;
     font-size: 12px;
     min-height: 35px;
+  }
+
+  .display-container {
+    margin-bottom: 5px; /* Reduce space between display and history button */
+    padding: 5px;
+  }
+
+  .button-container {
+    margin-bottom: 5px; /* Remove excess space before keypad */
+    padding: 0; /* Remove any padding */
   }
 
   .display {
