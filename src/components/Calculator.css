@@ -12,14 +12,15 @@ body {
 .calculator {
   background-color: #D5F5E3;
   box-shadow: 0 0 10px #C8E6C9;
-  padding: 5px 5px 5px 5px;
-  width: 40vw; /* Set width to half of the screen */
-  height: 90vh; /* Keep height relative to screen */
+  padding: 10px;
+  width: 50vw; /* Set width to half of the screen */
+  height: auto; /* Dynamically adjust height based on content */
+  min-height: 90vh; /* Maintain minimum height */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   border-radius: 10px;
-  margin-top: 25px;
+ margin-top: 10px;
 }
 
 /* Display Container */
@@ -77,6 +78,7 @@ body {
   overflow-y: auto; /* Enable scrolling inside the keypad */
   border-radius: 8px;
   background-color: #A5D6A7;
+  flex-grow:1 ;
 }
 
 /* Hide scrollbar for keypad */
@@ -371,14 +373,17 @@ button:active {
 @media (max-width: 480px) {
   .calculator {
     width: 95%;
-    height: 100vh;
+    height: auto; /* Prevent unnecessary space */
+    min-height: 100vh; /* Maintain full height */
     padding: 5px;
-    margin: 0; /* Make sure there's no margin */
+    margin: 0; /* Ensure no margin */
+    gap: 5px; /* Optional: Add consistent spacing */
   }
 
   .keypad {
     width: 100%;
     padding: 5px;
+    flex-grow: 1; /* Fill available space */
   }
 
   button {
@@ -390,6 +395,9 @@ button:active {
   .display-container {
     margin-bottom: 5px; /* Reduce space between display and history button */
     padding: 5px;
+    position: sticky;
+    top: 0; /* Make sure the display sticks */
+    z-index: 10;
   }
 
   .button-container {
