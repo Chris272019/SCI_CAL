@@ -3,11 +3,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  margin: 0; /* Ensure no margin */
+  padding: 0; /* Ensure no padding */
+  height: 100vh; /* Force body to fill viewport */
+  overflow: hidden; /* Prevent any scrolling */
   font-family: Georgia, 'Times New Roman', Times, serif;
-  overflow-y: hidden; 
   background-color: #5F8B4C;
 }
+
 
 /* Calculator container */
 .calculator {
@@ -16,13 +19,15 @@ body {
   padding: 10px;
   width: 50vw; /* Set width to half of the screen */
   height: auto; /* Dynamically adjust height based on content */
-  min-height: 100vh; /* Maintain minimum height */
+  min-height: 90vh; /* Reduce from 100vh to avoid overflow */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-top: 5px;
   box-sizing: border-box; /* Ensure padding is included in width and height */
-  overflow-y: auto; /* In case content overflows */
+  overflow-y: auto; /* Only scroll inside calculator */
 }
+
 
 /* Display Container */
 .display-container {
@@ -382,20 +387,18 @@ button:active {
 
 @media (max-width: 480px) {
   body {
-    overflow-y: hidden; /* Prevent vertical scrolling */
-    margin: 0;
-    padding: 0;
-    height: 100vh; /* Ensure full height */
+    height: 100vh; /* Full height on mobile */
+    overflow: hidden; /* Prevent vertical scrolling */
   }
-  
+
   .calculator {
     width: 95%;
-    height: 80vh; /* Force full height */
+    height: 85vh; /* Reduce to prevent bottom overflow */
     padding: 5px;
-    margin-top: 20px;
+    margin-top: 0; /* Remove margin */
     gap: 5px;
-    box-sizing: border-box; /* Ensure padding is included in dimensions */
-   
+    box-sizing: border-box; /* Include padding in dimensions */
+    overflow-y: auto; /* Enable scroll if needed */
   }
 
   .keypad {
@@ -445,4 +448,6 @@ button:active {
   .history-sidebar {
     width: 90%;
   }
+ 
+  
 }
