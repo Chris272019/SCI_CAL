@@ -23,7 +23,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-top: 5px;
+  margin-top: 10px;
   box-sizing: border-box; /* Ensure padding is included in width and height */
   overflow-y: auto; /* Only scroll inside calculator */
 }
@@ -395,7 +395,7 @@ button:active {
     width: 95%;
     height: 85vh; /* Reduce to prevent bottom overflow */
     padding: 5px;
-    margin-top: 0; /* Remove margin */
+    margin-top: 10px; /* Remove margin */
     gap: 5px;
     box-sizing: border-box; /* Include padding in dimensions */
     overflow-y: auto; /* Enable scroll if needed */
@@ -449,5 +449,8 @@ button:active {
     width: 90%;
   }
  
-  
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
 }
