@@ -1,39 +1,37 @@
-
-
+/* General body styles */
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  
+  font-family:'Courier New', Courier, monospace;
+  overflow: hidden; /* Prevent scrolling on the body */
 }
 
-/* Full-screen calculator */
+/* Calculator container */
 .calculator {
-  background-color: #263238;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background-color: #D5F5E3;
+  box-shadow: 0 0 10px #C8E6C9;
   padding: 20px;
-  width: 100vw;
-  height: 100vh;
+  width: 40vw; /* Set width to half of the screen */
+  height: 90vh; /* Keep height relative to screen */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 10px;
+  margin-top: 25px;
 }
 
 /* Display Container */
 .display-container {
-  background-color: #37474F;
+  background-color: #1B5E20;
   border: 1px solid #ccc;
   padding: 10px;
   margin-bottom: 10px;
-  position: sticky;
-  top: 0; /* Keeps it at the top while scrolling */
-  z-index: 1000;
+  border-radius: 5px;
 }
 
-/* Display */
+/* Display styles */
 .display {
   display: flex;
   flex-direction: column;
@@ -70,49 +68,66 @@ body {
 .keypad {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  border: 2px solid #BDBDBD;
+  padding: 10px;
+  width: 100%;
+  margin: 0 auto; /* Center the keypad horizontally */
+  max-height: 400px;
+  overflow-y: auto; /* Enable scrolling inside the keypad */
+  border-radius: 8px;
+  background-color: #A5D6A7;
 }
 
+/* Hide scrollbar for keypad */
+.keypad::-webkit-scrollbar {
+  display: none;
+}
+
+/* Keypad row layout */
 .keypad-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
+/* General button styles */
 button {
   flex: 1;
-  padding: 20px;
+  padding: 12px;
   border: none;
   border-radius: 5px;
-  font-size: 24px;
+  font-size: 18px;
   cursor: pointer;
   transition: background-color 0.2s;
-  background-color: #ECEFF1;
-  min-height: 60px;
+  background-color: #C8E6C9;
+  min-height: 50px;
 }
 
 /* Number button */
 .number {
-  background-color: #CFD8DC;
+  background-color: #81C784;
   color: #333;
-  border: 2px solid #90A4AE;
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432); /* Dark Forest Green */
 }
 
 /* Operator button */
 .operator {
-  background-color: #546E7A;
-  color: #333;
+  background-color: #2E7D32;
+  color: #fff;
+  border: 2px solid #2E7D32;
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432); /* Dark Forest Green */
 }
 
 /* Function button */
 .function {
-  background-color: #FF6F00;
-  color: #333;
-  width: 60px;
-  height: 60px;
-  font-size: 16px;
-  border-radius: 8px;
-  margin: 2px;
-  border: 2px solid #FFC107;
+  background-color: #4CAF50;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 6px;
+  margin: 1px;
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432); /* Dark Forest Green */
 }
 
 /* Memory button */
@@ -123,7 +138,7 @@ button {
 
 /* Button hover and active effects */
 button:hover {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 button:active {
@@ -132,89 +147,96 @@ button:active {
 
 /* Hover effects */
 .number:hover {
-  background-color: #B0BEC5;
+  background-color: #94cf96;
 }
 
 .function:hover {
-  background-color: #FFA000;
+  background-color: #66BB6A;
 }
-
-/*--------------------------------------------------------------*/
+.operator:hover{
+  background-color: #388E3C;
+  border: 2px solid #2E7D32;
+}
 
 /* Button Container */
 .button-container {
   display: flex;
-  gap: 5px; /* Smaller gap between buttons */
-  justify-content: flex-end; /* Align to the right */
+  justify-content: flex-end; /* Push button to the right */
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5px; /* Add space between button and keypad */
 }
 
-/* Button Styles */
-.history-btn{
+/* History button styles */
+.history-btn {
   border: none;
-  background-color: #263238; /* Removes background */
+  background-color: #D5F5E3;
+  color: #263238;
   cursor: pointer;
-  padding: 5px; /* Minimal padding */
+  padding: 3px; /* Reduce padding */
+  display: inline-flex;
+  align-items: center;
+  justify-content: right;
+  transition: transform 0.2s ease-in-out;
+  font-size: 14px; /* Smaller icon size */
+  width: 28px; /* Smaller width */
+  height: 28px; /* Smaller height for a square */
+}
+.history-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.clear-history {
+  border: none;
+  color: #263238;
+  cursor: pointer;
+  padding: 5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px; /* Icon size */
-  margin-left: 5px; /* Small spacing between buttons */
+  font-size: 12px;
+  margin-left: 5px;
   transition: transform 0.2s ease-in-out;
 }
-.clear-history{
-  border: none;
- color:#263238;
-  cursor: pointer;
-  padding: 5px; /* Minimal padding */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px; /* Icon size */
-  margin-left: 5px; /* Small spacing between buttons */
-  transition: transform 0.2s ease-in-out;
-}
+
 /* Icon Styling */
 .icon-right {
   margin: 0;
   padding: 0;
   display: inline-flex;
   align-items: center;
+  color: #263238;
 }
 
-
 /* Button Hover Effects */
-.history-btn:hover,
+
 .clear-history:hover {
   background-color: #455a64;
 }
 
-/* Close Button for Sidebar */
-.close-history {
-  background-color: transparent;
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-/* Sidebar and Header */
+/* History Sidebar */
 .history-sidebar {
   position: fixed;
   top: 0;
   right: -320px; /* Hidden by default */
   width: 300px;
   height: 100vh;
-  background-color: #f8f8f8;
+  background-color: #D5F5E3;
   border-left: 1px solid #ddd;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   z-index: 1000;
   transition: right 0.3s ease-in-out;
+  visibility: hidden; /* Hide by default */
+  opacity: 0;
 }
 
 /* Show Sidebar */
 .history-sidebar.show {
   right: 0;
+  visibility: visible; /* Show when the class is added */
+  opacity: 1;
 }
 
 /* Header Styles */
@@ -222,7 +244,7 @@ button:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #37474f;
+  background-color: #1B5E20;
   color: #fff;
   padding: 15px;
   border-bottom: 1px solid #ddd;
@@ -242,22 +264,55 @@ button:active {
 
 /* Individual History Item */
 .history-item {
-  background-color: #fff;
-  padding: 10px;
-  margin-bottom: 8px;
-  border: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #E0F2F1; /* Soft mint background */
+  padding: 10px 15px;
+  margin-bottom: 5px;
   border-radius: 5px;
-  transition: background-color 0.2s ease-in-out;
+  border: 1px solid #BDBDBD;
+  position: relative; /* For absolute positioning */
 }
+
 
 .history-item:hover {
   background-color: #f0f0f0;
 }
 
+.right-icon{
+  color: #4CAF50;
+  width: 10px;
+}
+
+.close-history{
+  background-color: #1B5E20;
+}
+.close-history:focus{
+  outline: none;
+  box-shadow: none;
+}
+
 /* Formula Style */
 .history-formula {
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
+  flex-grow: 1; /* Take remaining space */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.history-clear {
+  width: 10px; /* Square size */
+  height: 10px;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 10px; /* Add spacing between formula and button */
 }
 
 /* Empty History Message */
@@ -268,33 +323,87 @@ button:active {
   font-size: 14px;
 }
 
-
-/* Hide scrollbar but keep scroll functionality */
+/* Hide scrollbar globally but keep scroll functionality */
 ::-webkit-scrollbar {
   display: none;
 }
 
-/* Media Queries */
+/*--------------------------------------------------------------*/
+/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .calculator {
-    width: 100%;
-    height: 100vh;
+    width: 90%;
+    height: 95vh;
     padding: 15px;
+  }
+
+  .keypad {
+    width: 100%;
+    padding: 8px;
   }
 
   button {
-    padding: 15px;
-    font-size: 18px;
-    min-height: 50px;
+    padding: 10px;
+    font-size: 14px;
+    min-height: 40px;
   }
 
   .display {
-    font-size: 24px;
-    min-height: 100px;
-    padding: 10px;
+    font-size: 18px;
+    min-height: 80px;
+    padding: 8px;
   }
 
   .result {
-    font-size: 28px;
+    font-size: 20px;
+  }
+
+  .function {
+    width: 40px;
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .history-sidebar {
+    width: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  .calculator {
+    width: 95%;
+    height: 100vh;
+    padding: 10px;
+  }
+
+  .keypad {
+    width: 100%;
+    padding: 5px;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 12px;
+    min-height: 35px;
+  }
+
+  .display {
+    font-size: 16px;
+    min-height: 60px;
+    padding: 5px;
+  }
+
+  .result {
+    font-size: 18px;
+  }
+
+  .function {
+    width: 35px;
+    height: 35px;
+    font-size: 10px;
+  }
+
+  .history-sidebar {
+    width: 100%;
   }
 }

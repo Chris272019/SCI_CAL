@@ -57,7 +57,7 @@ const Keypad = ({
         <div className="history-header">
           <h3>Calculation History</h3>
           <button className="close-history" onClick={onHistory}>
-            <FaTimes />
+            <FaTimes className="right-icon" />
           </button>
         </div>
         <div className="history-list">
@@ -65,8 +65,11 @@ const Keypad = ({
             history.map((item, index) => (
               <div key={index} className="history-item">
                 <div className="history-formula">{item}</div>
-                <button className="clear-history" onClick={onClearHistory}>
-                  <FaTrash className="icon-right" />
+                <button
+                     className="history-clear"
+                     onClick={() => onClearHistory(index)} // Pass index here
+>
+                     <FaTrash className="right-icon" />
                 </button>
               </div>
             ))

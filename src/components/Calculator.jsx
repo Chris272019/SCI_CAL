@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Keypad from './Keypad';
+import Keypad from './keypad';
 import './Calculator.css';
 
 
@@ -334,9 +334,12 @@ const Calculator = () => {
     return showHistory ? 'Return' : 'History';
   };
 
-  const handleClearHistory = () => {
-    setHistory([]);
+  const handleClearHistory = (indexToDelete) => {
+    setHistory((prevHistory) =>
+      prevHistory.filter((_, index) => index !== indexToDelete)
+    );
   };
+  
 
   const handleAns = () => {
     if (lastAnswer !== null) {
