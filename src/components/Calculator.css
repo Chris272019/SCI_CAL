@@ -176,7 +176,7 @@ button:active {
   padding: 3px; /* Reduce padding */
   display: inline-flex;
   align-items: center;
-  justify-content: right;
+  justify-content: center;
   transition: transform 0.2s ease-in-out;
   font-size: 14px; /* Smaller icon size */
   width: 28px; /* Smaller width */
