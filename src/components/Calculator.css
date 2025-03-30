@@ -377,9 +377,13 @@ button:active {
 }
 
 @media (max-width: 480px) {
-  .body{
-    overflow-y: hidden;
+  body {
+    overflow-y: hidden; /* Prevent vertical scrolling */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ensure full height */
   }
+  
   .calculator {
     width: 95%;
     height: 80vh; /* Force full height */
@@ -404,6 +408,7 @@ button:active {
   }
 
   .display-container {
+    margin-top: 5px;
     margin-bottom: 5px;
     padding: 5px;
     position: sticky;
