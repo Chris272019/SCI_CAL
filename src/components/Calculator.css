@@ -7,7 +7,7 @@ body {
   padding: 0; /* Ensure no padding */
   height: 100vh; /* Force body to fill viewport */
   overflow: hidden; /* Prevent any scrolling */
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Times New Roman', Times, serif;
   background-color: #5F8B4C;
 }
 
@@ -26,6 +26,7 @@ body {
   margin-top: 10px;
   box-sizing: border-box; /* Ensure padding is included in width and height */
   overflow-y: auto; /* Only scroll inside calculator */
+  border-radius: 5px;
 }
 
 
@@ -431,7 +432,7 @@ button:active {
 
   .display {
     font-size: 16px;
-    min-height: 60px;
+    min-height: 70px;
     padding: 5px;
   }
 
