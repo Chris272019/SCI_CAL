@@ -16,12 +16,10 @@ body {
   padding: 10px;
   width: 50vw; /* Set width to half of the screen */
   height: auto; /* Dynamically adjust height based on content */
-  min-height: 90vh; /* Maintain minimum height */
+  min-height: 100vh; /* Maintain minimum height */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border-radius: 10px;
-  margin-top: 10px;
   box-sizing: border-box; /* Ensure padding is included in width and height */
   overflow-y: auto; /* In case content overflows */
 }
