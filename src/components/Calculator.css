@@ -1,16 +1,15 @@
 /* General body styles */
 body {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* Align content at the top */
   align-items: center;
-  margin: 0; /* Ensure no margin */
-  padding: 0; /* Ensure no padding */
-  height: 100vh; /* Force body to fill viewport */
-  overflow: hidden; /* Prevent any scrolling */
+  margin: 0;
+  padding: 20px 0; /* Add padding on top to create space */
+  min-height: 100dvh; /* Maintain full viewport height */
+  overflow: hidden;
   font-family: 'Times New Roman', Times, serif;
   background-color: #5F8B4C;
 }
-
 
 /* Calculator container */
 .calculator {
@@ -19,16 +18,15 @@ body {
   padding: 10px;
   width: 50vw; /* Set width to half of the screen */
   height: auto; /* Dynamically adjust height based on content */
-  min-height: 90vh; /* Reduce from 100vh to avoid overflow */
+  max-height: 90vh; /* Prevent overflow */
+  margin-top: 20px; /* Add margin to push down */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-top: 10px;
   box-sizing: border-box; /* Ensure padding is included in width and height */
   overflow-y: auto; /* Only scroll inside calculator */
   border-radius: 5px;
 }
-
 
 /* Display Container */
 .display-container {
@@ -80,9 +78,9 @@ body {
   border: 2px solid #BDBDBD;
   padding: 10px;
   width: 100%;
-  margin: 0 auto; /* Center the keypad horizontally */
+  margin: 0 auto;
   max-height: 400px;
-  overflow-y: auto; /* Enable scrolling inside the keypad */
+  overflow-y: auto;
   border-radius: 8px;
   background-color: #A5D6A7;
   flex-grow: 1;
@@ -101,7 +99,7 @@ body {
 
 /* General button styles */
 button {
-  flex: 1;
+  flex: 1 1 20%;
   padding: 12px;
   border: none;
   border-radius: 5px;
@@ -116,7 +114,7 @@ button {
 .number {
   background-color: #81C784;
   color: #333;
-  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432); /* Dark Forest Green */
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432);
 }
 
 /* Operator button */
@@ -124,7 +122,7 @@ button {
   background-color: #2E7D32;
   color: #fff;
   border: 2px solid #2E7D32;
-  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432); /* Dark Forest Green */
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432);
 }
 
 /* Function button */
@@ -136,7 +134,7 @@ button {
   font-size: 14px;
   border-radius: 6px;
   margin: 1px;
-  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432); /* Dark Forest Green */
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.432);
 }
 
 /* Memory button */
@@ -171,7 +169,7 @@ button:active {
 /* Button Container */
 .button-container {
   display: flex;
-  justify-content: flex-end; /* Push button to the right */
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
 }
@@ -182,14 +180,14 @@ button:active {
   background-color: #D5F5E3;
   color: #263238;
   cursor: pointer;
-  padding: 3px; /* Reduce padding */
+  padding: 3px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease-in-out;
-  font-size: 14px; /* Smaller icon size */
-  width: 28px; /* Smaller width */
-  height: 28px; /* Smaller height for a square */
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
 }
 
 .history-btn:focus {
@@ -197,38 +195,11 @@ button:active {
   box-shadow: none;
 }
 
-.clear-history {
-  border: none;
-  color: #263238;
-  cursor: pointer;
-  padding: 5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  margin-left: 5px;
-  transition: transform 0.2s ease-in-out;
-}
-
-/* Icon Styling */
-.icon-right {
-  margin: 0;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  color: #263238;
-}
-
-/* Button Hover Effects */
-.clear-history:hover {
-  background-color: #455a64;
-}
-
 /* History Sidebar */
 .history-sidebar {
   position: fixed;
   top: 0;
-  right: -320px; /* Hidden by default */
+  right: -320px;
   width: 300px;
   height: 100%;
   background-color: #D5F5E3;
@@ -237,15 +208,14 @@ button:active {
   overflow-y: auto;
   z-index: 1000;
   transition: right 0.3s ease-in-out;
-  visibility: hidden; /* Hide by default */
+  visibility: hidden;
   opacity: 0;
-  will-change: transform, opacity; /* Improve sidebar performance */
 }
 
 /* Show Sidebar */
 .history-sidebar.show {
   right: 0;
-  visibility: visible; /* Show when the class is added */
+  visibility: visible;
   opacity: 1;
 }
 
@@ -260,11 +230,6 @@ button:active {
   border-bottom: 1px solid #ddd;
 }
 
-.history-header h3 {
-  margin: 0;
-  font-size: 18px;
-}
-
 /* History List */
 .history-list {
   padding: 10px;
@@ -277,61 +242,11 @@ button:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #E0F2F1; /* Soft mint background */
+  background-color: #E0F2F1;
   padding: 10px 15px;
   margin-bottom: 5px;
   border-radius: 5px;
   border: 1px solid #BDBDBD;
-  position: relative; /* For absolute positioning */
-}
-
-.history-item:hover {
-  background-color: #f0f0f0;
-}
-
-.right-icon {
-  color: #4CAF50;
-  width: 10px;
-}
-
-.close-history {
-  background-color: #1B5E20;
-}
-
-.close-history:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-/* Formula Style */
-.history-formula {
-  font-size: 16px;
-  color: #333;
-  flex-grow: 1; /* Take remaining space */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.history-clear {
-  width: 10px; /* Square size */
-  height: 10px;
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-left: 10px; /* Add spacing between formula and button */
-}
-
-/* Empty History Message */
-.empty-history {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-  font-size: 14px;
 }
 
 /* Hide scrollbar globally but keep scroll functionality */
@@ -343,14 +258,14 @@ button:active {
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   body {
-    overflow-y: hidden; /* Prevent vertical scrolling */
-    margin: 0;
-    padding: 0;
-    height: 100vh; /* Ensure full height */
+    min-height: 100dvh; /* Full height on tablets */
+    overflow-y: auto;
   }
+
   .calculator {
     width: 90%;
-    height: 95vh;
+    height: auto;
+    max-height: 95vh;
     padding: 5px;
   }
 
@@ -388,25 +303,26 @@ button:active {
 
 @media (max-width: 480px) {
   body {
-    height: 100vh; /* Full height on mobile */
-    overflow: hidden; /* Prevent vertical scrolling */
+    min-height: 100dvh;
+    overflow-y: auto; /* Allow scroll if needed */
   }
 
   .calculator {
     width: 95%;
-    height: 85vh; /* Reduce to prevent bottom overflow */
+    height: auto;
+    max-height: 85vh;
     padding: 5px;
-    margin-top: 10px; /* Remove margin */
+    margin-top: 0;
     gap: 5px;
-    box-sizing: border-box; /* Include padding in dimensions */
-    overflow-y: auto; /* Enable scroll if needed */
+    box-sizing: border-box;
+    overflow-y: auto;
   }
 
   .keypad {
     width: 100%;
     padding: 5px;
     margin-top: 20px;
-    flex-grow: 1; /* Fill available space */
+    flex-grow: 1;
   }
 
   button {
@@ -447,9 +363,9 @@ button:active {
   }
 
   .history-sidebar {
-    width: 90%;
+    width: 80%; /* Better for smaller screens */
   }
- 
+
   html {
     height: 100%;
     overflow: hidden;
